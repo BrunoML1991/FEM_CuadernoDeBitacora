@@ -9,13 +9,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bruno.cuadernodebitacora.pojos.Temperature;
+import com.example.bruno.cuadernodebitacora.pojos.Result;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 import java.util.List;
+
+import com.example.bruno.cuadernodebitacora.pojos.ApiResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,9 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String API_BASE_URL = "http://api.openweathermap.org/data/2.5/";
-    //http://api.openweathermap.org/data/2.5/find?lat=40.39354&lon=-3.662&cnt=20&APPID=cf12f7ed0c2c47a7dcf70ad2617be4dc
-
+    private static final String API_BASE_URL = "https://api.nytimes.com/svc/books/v3/";
+    //https://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?api-key=b02cc3a87d0c4a9e900003cedb900a22
 
     private static final String LOG_TAG = "BML";
     private FirebaseAuth mFirebaseAuth;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView tvRespuesta;
 
-    private TemperatureRESTAPIService apiService;
+    private BookRESTAPIService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.logoutButton).setOnClickListener(this);
+        this.userAuthentication();
 
+    }
+
+    public void userAuthentication (){
         //Firebase
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -55,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (user != null) {
                     // user is signed in
                     CharSequence username = user.getDisplayName();
-                    Log.i(LOG_TAG,username.toString());
+                    Log.i(LOG_TAG,"User: "+username.toString());
                 } else {
                     // user is signed out
                     startActivityForResult(
@@ -72,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         };
-
     }
 
     @Override
@@ -106,31 +110,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        apiService = retrofit.create(TemperatureRESTAPIService.class);
+        apiService = retrofit.create(BookRESTAPIService.class);
         obtenerInfoPais();
     }
 
     public void obtenerInfoPais() {
 
-        Call<List<Temperature>> call_async = apiService.getCountryByName();
+        Call<ApiResponse> call_async = apiService.getCountryByName();
 
         // Asíncrona
-        call_async.enqueue(new Callback<List<Temperature>>() {
+        call_async.enqueue(new Callback<ApiResponse>() {
             @Override
-            public void onResponse(Call<List<Temperature>> call, Response<List<Temperature>> response) {
-                List<Temperature> albumList = response.body();
-                if (null != albumList) {
-                    for (Temperature temperature : albumList) {
-                        Log.i(LOG_TAG,temperature.toString());
-                    }
-                    Log.i(LOG_TAG, "obtenerInfoPais => respuesta=" + albumList.toString());
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                ApiResponse apiResponse = response.body();
+                if (null != apiResponse) {
+                    List<Result> books = apiResponse.getResults();
+                    Log.i(LOG_TAG, "obtenerInfoPais => respuesta= " + books.toString());
                 } else {
-                    Log.i(LOG_TAG, "Error en alguna parte");
+                    Log.i(LOG_TAG, "No se ha conseguido descargar la información");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Temperature>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Toast.makeText(
                         getApplicationContext(),
                         "ERROR: " + t.getMessage(),
