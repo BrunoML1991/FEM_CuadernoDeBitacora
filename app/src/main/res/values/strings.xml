@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">CuadernoDeBitacoraSpotify</string>
-    <string name="signed_in">Signed in!</string>
-    <string name="signed_out">Signed out!</string>
+    <string name="sign_in">Signed in</string>
+    <string name="sign_out">Signed out</string>
     <string name="signed_cancelled">Signed in cancelled</string>
+    <string name="label_emailpassword">Email/Password Authentication</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="account_linking">Account Linking</string>
+    <string name="field_required">Field required.</string>
 </resources>
