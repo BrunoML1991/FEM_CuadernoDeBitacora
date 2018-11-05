@@ -13,9 +13,12 @@ import com.example.bruno.cuadernodebitacora.pojos.Result;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.bruno.cuadernodebitacora.pojos.ApiResponse;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +33,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    // btb Firebase database variables
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mMessagesDatabaseReference;
+
     private static final int RC_SIGN_IN = 2018;
 
     private TextView tvRespuesta;
@@ -41,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("booksData");
         findViewById(R.id.logoutButton).setOnClickListener(this);
         this.userAuthentication();
 
@@ -114,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void obtenerLibros() {
 
         Call<ApiResponse> call_async = apiService.getCountryByName();
+        List<Result> bookList;
 
         // Asíncrona
         call_async.enqueue(new Callback<ApiResponse>() {
@@ -123,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (null != apiResponse) {
                     List<Result> books = apiResponse.getResults();
                     Log.i(LOG_TAG, "obtenerLibros => respuesta= " + books.toString());
+                    MainActivity.this.updateFirebaseDB(books);
                 } else {
                     Log.i(LOG_TAG, "No se ha conseguido descargar la información");
                 }
@@ -139,6 +150,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+    }
+
+    public void updateFirebaseDB(List<Result> books) {
+        mMessagesDatabaseReference.removeValue();
+        for (int i = 0; i < books.size(); i++) {
+            mMessagesDatabaseReference.push().setValue(new Book(books.get(i).getTitle(), books.get(i).getAuthor()));
+        }
     }
 
     @Override
