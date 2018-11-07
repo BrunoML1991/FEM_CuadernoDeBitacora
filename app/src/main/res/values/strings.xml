@@ -14,8 +14,9 @@
     <string name="get_resources_text">Get Resources</string>
     <string name="add_order_text">Add Order</string>
     <string name="submit_order_text">Submit Order</string>
+    <string name="delivered_order">Deliver Order</string>
 
     <!--Columns Names-->
-    <string name="column_author">Autor</string>
-    <string name="column_title">Titulo</string>
+    <string name="column_author">Author</string>
+    <string name="column_title">Title</string>
 </resources>

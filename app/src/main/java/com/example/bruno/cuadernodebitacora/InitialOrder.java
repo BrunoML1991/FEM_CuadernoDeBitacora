@@ -1,15 +1,15 @@
 package com.example.bruno.cuadernodebitacora;
 
-public class InitialOrderPost {
+public class InitialOrder {
 
     private String book_id;
     private String book_title;
     private long date_milis;
 
-    public InitialOrderPost() {
+    public InitialOrder() {
     }
 
-    public InitialOrderPost(String book_id, String book_title, long date_milis) {
+    public InitialOrder(String book_id, String book_title, long date_milis) {
         this.book_id = book_id;
         this.book_title = book_title;
         this.date_milis = date_milis;
@@ -41,7 +41,7 @@ public class InitialOrderPost {
 
     @Override
     public String toString() {
-        return "InitialOrderPost{" +
+        return "InitialOrder{" +
                 "book_id='" + book_id + '\'' +
                 ", book_title='" + book_title + '\'' +
                 ", date_milis=" + date_milis +
