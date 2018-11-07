@@ -1,26 +1,16 @@
 package com.example.bruno.cuadernodebitacora;
 
-public class Book {
+public class BookResponse {
 
-    private String id;
     private String title;
     private String author;
 
-    public Book() {
+    public BookResponse() {
     }
 
-    public Book(String id, String title, String author) {
-        this.id = id;
+    public BookResponse(String title, String author) {
         this.title = title;
         this.author = author;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -41,9 +31,8 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
+        return "BookResponse{" +
+                "title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 '}';
     }

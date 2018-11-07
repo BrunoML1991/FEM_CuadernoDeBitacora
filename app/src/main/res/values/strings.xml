@@ -8,4 +8,14 @@
     <string name="hint_password">Password</string>
     <string name="account_linking">Account Linking</string>
     <string name="field_required">Field required.</string>
+
+    <!--Bottons-->
+    <string name="log_out_text">Log Out</string>
+    <string name="get_resources_text">Get Resources</string>
+    <string name="add_order_text">Add Order</string>
+    <string name="submit_order_text">Submit Order</string>
+
+    <!--Columns Names-->
+    <string name="column_author">Autor</string>
+    <string name="column_title">Titulo</string>
 </resources>

@@ -20,7 +20,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.bruno.cuadernodebitacora.AuthenticationUser">
+        <activity android:name="com.example.bruno.cuadernodebitacora.AuthenticationUserActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.example.bruno.cuadernodebitacora.AddOrderActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

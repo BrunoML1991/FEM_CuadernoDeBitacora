@@ -6,14 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bruno.cuadernodebitacora.pojos.Result;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.bruno.cuadernodebitacora.pojos.ApiResponse;
@@ -30,16 +28,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final String API_BASE_URL = "https://api.nytimes.com/svc/books/v3/";
     public static final String LOG_TAG = "BML";
+    public static final String BOOKS_DATA = "booksData";
+
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     // btb Firebase database variables
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mMessagesDatabaseReference;
+    private DatabaseReference mBookDatabaseReference;
 
     private static final int RC_SIGN_IN = 2018;
-
-    private TextView tvRespuesta;
 
     private BookRESTAPIService apiService;
 
@@ -49,8 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("booksData");
+        mBookDatabaseReference = mFirebaseDatabase.getReference().child(MainActivity.BOOKS_DATA);
         findViewById(R.id.logoutButton).setOnClickListener(this);
+        findViewById(R.id.addOrder).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,AddOrderActivity.class));
+            }
+        });
         this.userAuthentication();
 
     }
@@ -65,19 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (user != null) {
                     // user is signed in
                 } else {
-                    // user is signed out
-                    /*startActivityForResult(
-                            AuthUI.getInstance().
-                                    createSignInIntentBuilder().
-                                    setAvailableProviders(Arrays.asList(
-                                            new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                            new AuthUI.IdpConfig.EmailBuilder().build()
-                                    )).
-                                    setIsSmartLockEnabled(!BuildConfig.DEBUG , true ).
-                                    build(),
-                            RC_SIGN_IN);*/
                     startActivityForResult(
-                            new Intent(MainActivity.this, AuthenticationUser.class),
+                            new Intent(MainActivity.this, AuthenticationUserActivity.class),
                             RC_SIGN_IN
                     );
                 }
@@ -153,9 +146,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void updateFirebaseDB(List<Result> books) {
-        mMessagesDatabaseReference.removeValue();
+        mBookDatabaseReference.removeValue();
         for (int i = 0; i < books.size(); i++) {
-            mMessagesDatabaseReference.push().setValue(new Book(books.get(i).getTitle(), books.get(i).getAuthor()));
+            mBookDatabaseReference.push().setValue(new BookResponse(books.get(i).getTitle(), books.get(i).getAuthor()));
         }
     }
 
@@ -164,4 +157,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFirebaseAuth.signOut();
         Log.i(LOG_TAG, getString(R.string.sign_out));
     }
+
 }

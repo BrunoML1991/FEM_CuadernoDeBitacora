@@ -18,7 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class AuthenticationUser extends AppCompatActivity implements View.OnClickListener {
+public class AuthenticationUserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mFirebaseAuth;
     private EditText mEmailField;
@@ -90,7 +90,7 @@ public class AuthenticationUser extends AppCompatActivity implements View.OnClic
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(MainActivity.LOG_TAG, "signInWithCredentials:failure", task.getException());
-                            Toast.makeText(AuthenticationUser.this, "Authentication failed: " + task.getException().getMessage(),
+                            Toast.makeText(AuthenticationUserActivity.this, "Authentication failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
