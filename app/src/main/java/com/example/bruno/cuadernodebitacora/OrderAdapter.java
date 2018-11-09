@@ -14,6 +14,7 @@ public class OrderAdapter extends ArrayAdapter {
     public OrderAdapter(Context context, int resource, List<InitialOrder> objects) {
         super(context, resource, objects);
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -21,7 +22,7 @@ public class OrderAdapter extends ArrayAdapter {
         }
         InitialOrder order = (InitialOrder) getItem(position);
         TextView book_id = convertView.findViewById(R.id.order_id_list_item);
-        TextView  title = convertView.findViewById(R.id.title_list_item);
+        TextView title = convertView.findViewById(R.id.title_list_item);
 
         title.setText(order.getBook_title());
         book_id.setText(order.getBook_id());

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,7 +30,7 @@ public class DeliverOrderActivity extends AppCompatActivity {
     public static final String DELIVERED_DATA = "deliveredOrders";
     private InitialOrder orderSelected = null;
     private int positionSelected;
-
+    public DeliveredOrder deliveredOrder = new DeliveredOrder();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +62,7 @@ public class DeliverOrderActivity extends AppCompatActivity {
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 orderAdapter.remove(orderSelected);
                 orderId.remove(orderSelected);
+                orderSelected = null;
             }
 
             @Override
@@ -91,24 +91,28 @@ public class DeliverOrderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (orderSelected != null) {
                     mOrderDatabaseReference = mFirebaseDatabase.getReference().child(DELIVERED_DATA);
-                    DeliveredOrder order = new DeliveredOrder(
-                            orderSelected.getBook_id(),
-                            orderId.get(positionSelected),
-                            orderSelected.getBook_title(),
-                            orderSelected.getDate_milis(),
-                            System.currentTimeMillis(),
-                            null,
-                            null
-                    );
-                    mOrderDatabaseReference.push().setValue(order);
-                    Toast.makeText(DeliverOrderActivity.this, "Order finished: " + order.toString(), Toast.LENGTH_LONG).show();
-                    Log.i(LOG_ORDER, "Order delivered: " + order.toString());
+                    deliveredOrder.setBook_id(orderSelected.getBook_id());
+                    deliveredOrder.setOrder_id(orderId.get(positionSelected));
+                    deliveredOrder.setBook_title(orderSelected.getBook_title());
+                    deliveredOrder.setOrder_started_date_milis(orderSelected.getDate_milis());
+                    deliveredOrder.setOrder_delivered_date_milis(System.currentTimeMillis());
+                    mOrderDatabaseReference.push().setValue(deliveredOrder);
+                    Toast.makeText(DeliverOrderActivity.this, "Order finished: " + deliveredOrder.toString(), Toast.LENGTH_LONG).show();
+                    Log.i(LOG_ORDER, "Order delivered: " + deliveredOrder.toString());
                     mOrderDatabaseReference = mFirebaseDatabase.getReference().child(AddOrderActivity.ORDER_DATA);
                     DatabaseReference current = mOrderDatabaseReference.child(orderId.get(positionSelected));
                     current.removeValue();
+                    deliveredOrder.setIssue_description(null);
+                    deliveredOrder.setIssue_photo_url(null);
                 } else {
                     Toast.makeText(DeliverOrderActivity.this, "Select an order from the list", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+        findViewById(R.id.submit_issue).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new IssueDialogFragment().show(getFragmentManager(), "ALERT DIALOG");
             }
         });
     }

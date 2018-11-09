@@ -8,6 +8,8 @@
     <string name="hint_password">Password</string>
     <string name="account_linking">Account Linking</string>
     <string name="field_required">Field required.</string>
+    <string name="issue_dialog_fragment_title">What was the issue?</string>
+    <string name="issue_dialog_fragment_hint">Write your issue</string>
 
     <!--Bottons-->
     <string name="log_out_text">Log Out</string>
@@ -15,6 +17,9 @@
     <string name="add_order_text">Add Order</string>
     <string name="submit_order_text">Submit Order</string>
     <string name="delivered_order">Deliver Order</string>
+    <string name="submit_issue">Submit Issue</string>
+    <string name="submit">Submit</string>
+
 
     <!--Columns Names-->
     <string name="column_author">Author</string>

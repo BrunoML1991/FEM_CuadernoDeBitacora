@@ -21,24 +21,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="center"
-            android:text="@string/column_title"/>
+            android:text="@string/column_title"
+            android:textAlignment="center" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="center"
-            android:text="@string/column_author"/>
+            android:text="@string/column_author"
+            android:textAlignment="center" />
 
     </LinearLayout>
 
     <ListView
         android:id="@+id/list_books"
         android:layout_width="match_parent"
+        android:layout_height="450dp"
         android:layout_below="@+id/list_columns"
-        android:layout_marginTop="@dimen/icon_top_margin"
-        android:layout_height="450dp" />
+        android:layout_marginTop="@dimen/icon_top_margin" />
 
     <Button
         android:id="@+id/submit_order"

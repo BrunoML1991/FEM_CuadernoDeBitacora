@@ -52,13 +52,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.addOrder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,AddOrderActivity.class));
+                startActivity(new Intent(MainActivity.this, AddOrderActivity.class));
             }
         });
         findViewById(R.id.deliver_order).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,DeliverOrderActivity.class));
+                startActivity(new Intent(MainActivity.this, DeliverOrderActivity.class));
             }
         });
         this.userAuthentication();
